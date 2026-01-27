@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Check, Star, Calendar, Clock, Users, Film, Server } from 'lucide-react';
 import { z } from 'zod';
-import { getMovieDetails, getTVDetails, getSeasonDetails, getMovieImages, getTVImages, getLogoUrl, MovieDetails, SeasonDetails, getImageUrl, getBackdropUrl, ServerType } from '@/lib/tmdb';
+import { getMovieDetails, getTVDetails, getSeasonDetails, getMovieImages, getTVImages, getLogoUrl, MovieDetails, SeasonDetails, getImageUrl, getBackdropUrl, ServerType, SERVER_LIST } from '@/lib/tmdb';
 import { addToWatchlist, isInWatchlist, removeFromWatchlist } from '@/lib/watchlist';
 import { saveWatchHistory } from '@/lib/watchHistory';
 import VideoPlayer from '@/components/VideoPlayer';
@@ -283,14 +283,32 @@ const Watch = () => {
                   
                   {/* Server Switcher */}
                   <Select value={selectedServer} onValueChange={(v) => setSelectedServer(v as ServerType)}>
-                    <SelectTrigger className="w-36">
+                    <SelectTrigger className="w-40">
                       <Server className="w-4 h-4 mr-2" />
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="videasy">Primary</SelectItem>
-                      <SelectItem value="server2">Server 2</SelectItem>
-                      <SelectItem value="server3">Server 3</SelectItem>
+                      {SERVER_LIST.map((server) => {
+                        const supports = [
+                          server.supportsMovies && 'Movies',
+                          server.supportsTV && 'TV',
+                          server.supportsAnime && 'Anime'
+                        ].filter(Boolean).join(', ');
+                        return (
+                          <SelectItem 
+                            key={server.id} 
+                            value={server.id}
+                            className="group relative"
+                          >
+                            <div className="flex items-center justify-between w-full">
+                              <span>{server.name}</span>
+                              <span className="ml-2 text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity">
+                                {supports}
+                              </span>
+                            </div>
+                          </SelectItem>
+                        );
+                      })}
                     </SelectContent>
                   </Select>
                 </div>

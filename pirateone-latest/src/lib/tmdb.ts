@@ -141,7 +141,7 @@ const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const fetchTMDB = async <T>(endpoint: string, params: Record<string, string> = {}): Promise<T> => {
   const url = new URL(`${TMDB_BASE_URL}${endpoint}`);
   url.searchParams.set('api_key', TMDB_API_KEY);
-  
+
   Object.entries(params).forEach(([key, value]) => {
     url.searchParams.set(key, value);
   });

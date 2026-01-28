@@ -318,7 +318,7 @@ const Watch = () => {
                     >
                       <Server className="w-4 h-4" />
                       <span className="font-medium">
-                        {selectedServer === 'videasy' ? 'Servers' : 'Servers'}
+                        Server {filteredServers.findIndex(s => s.id === selectedServer) + 1 || '?'}
                       </span>
                       <ChevronDown className={cn(
                         "w-4 h-4 ml-1 transition-transform duration-200",

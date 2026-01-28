@@ -277,7 +277,7 @@ export const getYouTubeEmbedUrl = (key: string) => {
   return `https://www.youtube.com/embed/${key}?autoplay=1&rel=0`;
 };
 
-export type ServerType = 'videasy' | 'autoembed' | 'vidsrc' | 'vidify' | 'movies111' | 'vidapi' | 'twoembed' | 'embed2';
+export type ServerType = 'videasy' | 'autoembed' | 'vidsrc' | 'vidify' | 'movies111' | 'vidapi' | 'twoembed' | 'embed2' | 'vidrock' | 'vidfast' | 'vidlink' | 'vidsrcsu' | 'vidnest' | 'moviesapi' | 'vidup' | 'vidsrccc' | 'vidzee';
 
 export interface ServerInfo {
   id: ServerType;
@@ -295,7 +295,16 @@ export const SERVER_LIST: ServerInfo[] = [
   { id: 'movies111', name: '111Movies', supportsMovies: true, supportsTV: true, supportsAnime: false },
   { id: 'vidapi', name: 'VidAPI', supportsMovies: true, supportsTV: true, supportsAnime: false },
   { id: 'twoembed', name: '2Embed', supportsMovies: true, supportsTV: true, supportsAnime: false },
-  { id: 'embed2', name: 'Embed2', supportsMovies: true, supportsTV: true, supportsAnime: false },
+  { id: 'embed2', name: 'Embed2 (Backup)', supportsMovies: true, supportsTV: true, supportsAnime: false },
+  { id: 'vidrock', name: 'VidRock', supportsMovies: true, supportsTV: true, supportsAnime: false },
+  { id: 'vidfast', name: 'VidFast', supportsMovies: true, supportsTV: true, supportsAnime: false },
+  { id: 'vidlink', name: 'VidLink', supportsMovies: true, supportsTV: true, supportsAnime: false },
+  { id: 'vidsrcsu', name: 'VidSrc.su', supportsMovies: true, supportsTV: true, supportsAnime: false },
+  { id: 'vidnest', name: 'VidNest', supportsMovies: true, supportsTV: true, supportsAnime: true },
+  { id: 'moviesapi', name: 'MoviesAPI', supportsMovies: true, supportsTV: true, supportsAnime: false },
+  { id: 'vidup', name: 'VidUp', supportsMovies: true, supportsTV: true, supportsAnime: false },
+  { id: 'vidsrccc', name: 'VidSrc.cc', supportsMovies: true, supportsTV: true, supportsAnime: true },
+  { id: 'vidzee', name: 'VidZee', supportsMovies: true, supportsTV: true, supportsAnime: true },
 ];
 
 export const getPlayerUrl = (
@@ -308,7 +317,64 @@ export const getPlayerUrl = (
 ) => {
   const accent = 'FD105E';
 
-  // AutoEmbed (previously server2)
+  // VidZee
+  if (server === 'vidzee') {
+    if (type === 'movie') return `https://player.vidzee.wtf/embed/movie/${id}`;
+    if (type === 'anime') return `https://player.vidzee.wtf/embed/anime/${id}${episode ? '/' + episode : ''}`;
+    return `https://player.vidzee.wtf/embed/tv/${id}/${season || 1}/${episode || 1}`;
+  }
+
+  // VidSrc.cc (v2 embed)
+  if (server === 'vidsrccc') {
+    if (type === 'movie') return `https://vidsrc.cc/v2/embed/movie/${id}`;
+    if (type === 'anime') return `https://vidsrc.cc/v2/embed/anime/ani${id}/${episode || 1}/sub`;
+    return `https://vidsrc.cc/v2/embed/tv/${id}/${season || 1}/${episode || 1}`;
+  }
+
+  // VidUp
+  if (server === 'vidup') {
+    if (type === 'movie') return `https://vidup.to/movie/${id}`;
+    return `https://vidup.to/tv/${id}/${season || 1}/${episode || 1}`;
+  }
+
+  // MoviesAPI
+  if (server === 'moviesapi') {
+    if (type === 'movie') return `https://moviesapi.club/movie/${id}`;
+    return `https://moviesapi.club/tv/${id}/${season || 1}/${episode || 1}`;
+  }
+
+  // VidNest
+  if (server === 'vidnest') {
+    if (type === 'movie') return `https://vidnest.fun/movie/${id}`;
+    if (type === 'anime') return `https://vidnest.fun/anime/${id}/${episode || 1}/${isDub ? 'dub' : 'sub'}`;
+    return `https://vidnest.fun/tv/${id}/${season || 1}/${episode || 1}`;
+  }
+
+  // VidSrc.su
+  if (server === 'vidsrcsu') {
+    if (type === 'movie') return `https://vidsrc.su/movie/${id}`;
+    return `https://vidsrc.su/tv/${id}/${season || 1}/${episode || 1}`;
+  }
+
+  // VidLink
+  if (server === 'vidlink') {
+    if (type === 'movie') return `https://vidlink.pro/movie/${id}`;
+    return `https://vidlink.pro/tv/${id}/${season || 1}/${episode || 1}`;
+  }
+
+  // VidFast
+  if (server === 'vidfast') {
+    if (type === 'movie') return `https://vidfast.pro/movie/${id}`;
+    return `https://vidfast.pro/tv/${id}/${season || 1}/${episode || 1}`;
+  }
+
+  // VidRock
+  if (server === 'vidrock') {
+    if (type === 'movie') return `https://vidrock.net/movie/${id}`;
+    return `https://vidrock.net/tv/${id}/${season || 1}/${episode || 1}`;
+  }
+
+  // AutoEmbed
   if (server === 'autoembed') {
     if (type === 'movie') {
       return `https://player.autoembed.cc/embed/movie/${id}`;
@@ -316,7 +382,7 @@ export const getPlayerUrl = (
     return `https://player.autoembed.cc/embed/tv/${id}/${season || 1}/${episode || 1}`;
   }
 
-  // VidSrc (previously server3)
+  // VidSrc (old)
   if (server === 'vidsrc') {
     if (type === 'movie') {
       return `https://vidsrc-embed.ru/embed/movie?tmdb=${id}`;
